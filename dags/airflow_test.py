@@ -50,7 +50,7 @@ DAG_ID = "example_snowflake"
 with DAG(
     DAG_ID,
     start_date=datetime(2021, 1, 1),
-    schedule_interval='* * * * *',
+    schedule_interval='30 * * * *',
     default_args={'snowflake_conn_id': SNOWFLAKE_CONN_ID},
     tags=['example'],
     catchup=False,
