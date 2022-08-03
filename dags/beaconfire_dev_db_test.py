@@ -45,11 +45,11 @@ SQL_INSERT_STATEMENT = f"INSERT INTO {SNOWFLAKE_SAMPLE_TABLE} VALUES ('name', %(
 SQL_LIST = [SQL_INSERT_STATEMENT % {"id": n} for n in range(0, 10)]
 SQL_MULTIPLE_STMTS = "; ".join(SQL_LIST)
 #ENV_ID = os.environ.get("SYSTEM_TESTS_ENV_ID")
-
+DAG_ID = "beaconfire_dev_db_test"
 # [START howto_operator_snowflake]
 
 with DAG(
-    DAG_ID = "beaconfire_dev_db_test",
+    DAG_ID,
     start_date=datetime(2021, 1, 1),
     schedule_interval='30 * * * *',
     default_args={'snowflake_conn_id': SNOWFLAKE_CONN_ID},
