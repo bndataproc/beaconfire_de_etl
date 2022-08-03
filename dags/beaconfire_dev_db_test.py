@@ -49,7 +49,7 @@ SQL_MULTIPLE_STMTS = "; ".join(SQL_LIST)
 # [START howto_operator_snowflake]
 
 with DAG(
-    DAG_ID = "beaconfire_dev_db_testing",
+    DAG_ID = "beaconfire_dev_db_test",
     start_date=datetime(2021, 1, 1),
     schedule_interval='30 * * * *',
     default_args={'snowflake_conn_id': SNOWFLAKE_CONN_ID},
@@ -85,7 +85,7 @@ with DAG(
 
     snowflake_op_template_file = SnowflakeOperator(
        task_id='snowflake_op_template_file',
-       sql='./airflow_test.sql',
+       sql='./beaconfire_dev_db_test.sql',
     )
 
     # [END howto_operator_snowflake]
