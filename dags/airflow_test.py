@@ -84,7 +84,7 @@ with DAG(
 
     snowflake_op_template_file = SnowflakeOperator(
        task_id='snowflake_op_template_file',
-       sql='../sql/airflow_test_ddl.sql',
+       sql='./airflow_test.sql',
     )
 
     # [END howto_operator_snowflake]
