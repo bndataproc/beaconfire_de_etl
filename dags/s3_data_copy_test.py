@@ -20,8 +20,8 @@ S3_FILE_PATH = 'product_order_trans_07152022.csv'
 
 with DAG(
     "s3_data_copy_test",
-    start_date=datetime(2022, 7, 12),
-    end_date = datetime(2022, 7, 14),
+    start_date=datetime(2022, 7, 13),
+    end_date = datetime(2022, 7, 16),
     schedule_interval='0 7 * * *',
     default_args={'snowflake_conn_id': SNOWFLAKE_CONN_ID},
     tags=['beaconfire'],
