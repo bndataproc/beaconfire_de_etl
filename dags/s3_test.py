@@ -16,12 +16,12 @@ SNOWFLAKE_SCHEMA = 'dev_db'
 SNOWFLAKE_ROLE = 'AW_developer'
 SNOWFLAKE_WAREHOUSE = 'aw_etl'
 SNOWFLAKE_STAGE = 'beaconfire_stage'
- #S3_FILE_PATH = '</path/to/file/sample_file.csv'
+S3_FILE_PATH = '</path/to/file/sample_file.csv'
 
 with DAG(
     "s3_test",
     start_date=datetime(2021, 1, 1),
-    schedule_interval='30 * * * *',
+    schedule_interval='0 7 * * *',
     default_args={'snowflake_conn_id': SNOWFLAKE_CONN_ID},
     tags=['beaconfire'],
     catchup=False,
