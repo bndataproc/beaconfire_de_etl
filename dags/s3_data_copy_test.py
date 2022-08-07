@@ -20,16 +20,17 @@ S3_FILE_PATH = 'product_order_trans_07152022.csv'
 
 with DAG(
     "s3_data_copy_test",
-    start_date=datetime(2021, 1, 1),
+    start_date=datetime(2022, 7, 12),
+    end_date = datetime(2022, 7, 14),
     schedule_interval='* * * * *',
     default_args={'snowflake_conn_id': SNOWFLAKE_CONN_ID},
     tags=['beaconfire'],
-    catchup=False,
+    catchup=True,
 ) as dag:
 
     copy_into_prestg = S3ToSnowflakeOperator(
         task_id='prestg_product_order_trans',
-        s3_keys=[S3_FILE_PATH],
+        s3_keys=['product_order_trans_{{ dag_run.start_date.strftime("%m%d%Y") }}.csv'],
         table='prestg_product_order_trans',
         schema=SNOWFLAKE_SCHEMA,
         stage=SNOWFLAKE_STAGE,
