@@ -6,7 +6,7 @@ from datetime import datetime
 
 from airflow import DAG
 from airflow.providers.snowflake.operators.snowflake import SnowflakeOperator
-from airflow.operators.sql import SQLCheckOperator
+from airflow.providers.snowflake.operators.snowflake import SnowflakeCheckOperator
 
 
 SNOWFLAKE_CONN_ID = 'snowflake_conn'
@@ -25,7 +25,7 @@ with DAG(
     catchup=False,
 ) as dag:
 
-    prestg_last_load_chk = SQLCheckOperator(
+    prestg_last_load_chk = SnowflakeCheckOperator(
     conn_id=SNOWFLAKE_CONN_ID,
     task_id="prestg_last_load_chk",
     sql="select count(*) from prestg_account_query_hist where date(max(load_utc_ts))>='2022-08-06'",
