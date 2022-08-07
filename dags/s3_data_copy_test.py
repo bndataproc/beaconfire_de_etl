@@ -16,36 +16,27 @@ SNOWFLAKE_SCHEMA = 'dev_db'
 SNOWFLAKE_ROLE = 'AW_developer'
 SNOWFLAKE_WAREHOUSE = 'aw_etl'
 SNOWFLAKE_STAGE = 'beaconfire_stage'
-S3_FILE_PATH = '</path/to/file/sample_file.csv'
+S3_FILE_PATH = 's3://de-july-airflow/product-order/product_order_trans_07152022.csv'
 
 with DAG(
-    "s3_test",
+    "s3_data_copy_test",
     start_date=datetime(2021, 1, 1),
-    schedule_interval='0 7 * * *',
+    schedule_interval='* * * * *',
     default_args={'snowflake_conn_id': SNOWFLAKE_CONN_ID},
     tags=['beaconfire'],
     catchup=False,
 ) as dag:
 
-    snowflake_op_template_file = SnowflakeOperator(
-       task_id='snowflake_op_template_file',
-       sql='./beaconfire_dev_db_test.sql',
-    )
-
-
-
-    copy_into_table = S3ToSnowflakeOperator(
-        task_id='copy_into_table',
+    copy_into_prestg = S3ToSnowflakeOperator(
+        task_id='prestg_product_order_trans',
         s3_keys=[S3_FILE_PATH],
-        table=SNOWFLAKE_SAMPLE_TABLE,
+        table='prestg_product_order_trans',
         schema=SNOWFLAKE_SCHEMA,
         stage=SNOWFLAKE_STAGE,
         file_format="(type = 'CSV',field_delimiter = ';')",
     )
 
-
-
-    snowflake_op_template_file >> copy_into_table
+    copy_into_prestg
           
         
     
