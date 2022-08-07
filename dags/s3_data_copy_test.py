@@ -15,7 +15,7 @@ SNOWFLAKE_SCHEMA = 'dev_db'
 
 SNOWFLAKE_ROLE = 'AW_developer'
 SNOWFLAKE_WAREHOUSE = 'aw_etl'
-SNOWFLAKE_STAGE = 'beaconfire_stage'
+SNOWFLAKE_STAGE = 's3_stage_trans_order'
 S3_FILE_PATH = 's3://de-july-airflow/product-order/product_order_trans_07152022.csv'
 
 with DAG(
