@@ -30,7 +30,7 @@ with DAG(
 
     copy_into_prestg = S3ToSnowflakeOperator(
         task_id='prestg_product_order_trans',
-        s3_keys=['product_order_trans_{{ task.start_date.strftime("%m%d%Y") }}.csv'],
+        s3_keys=['product_order_trans_{{ ds.strftime("%m%d%Y") }}.csv'],
         table='prestg_product_order_trans',
         schema=SNOWFLAKE_SCHEMA,
         stage=SNOWFLAKE_STAGE,
