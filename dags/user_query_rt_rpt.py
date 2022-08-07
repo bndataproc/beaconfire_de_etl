@@ -19,7 +19,7 @@ SNOWFLAKE_WAREHOUSE = 'aw_etl'
 with DAG(
     "user_query_rt_rpt",
     start_date=datetime(2021, 1, 1),
-    schedule_interval='0 7 * * *',
+    schedule_interval='* * * * *',
     default_args={'snowflake_conn_id': SNOWFLAKE_CONN_ID},
     tags=['beaconfire'],
     catchup=False,
@@ -37,6 +37,6 @@ with DAG(
        sql='./user_query_rt_rpt.sql',
     )
 
-    prestg_last_load_chk >> user_query_rt_rpt        
+    prestg_last_load_chk >> user_query_rt_rpt       
     
 
