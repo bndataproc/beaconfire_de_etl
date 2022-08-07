@@ -28,7 +28,7 @@ with DAG(
     prestg_last_load_chk = SnowflakeCheckOperator(
     conn_id=SNOWFLAKE_CONN_ID,
     task_id="prestg_last_load_chk",
-    sql="select count(*) from prestg_account_query_hist where date(max(load_utc_ts))>='2022-08-06'",
+    sql="select count(*) from prestg_account_query_hist where date(load_utc_ts)>={{START_DATE}}",
     params={"pickup_datetime": "2021-01-01"},
     )
 
