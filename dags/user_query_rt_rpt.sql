@@ -1,4 +1,4 @@
-use schema beaconfire.prod_db;
+use schema beaconfire.dev_db;
 
 create or replace local temp table query_hist as 
 select *
