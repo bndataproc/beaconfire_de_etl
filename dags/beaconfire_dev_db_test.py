@@ -19,7 +19,7 @@ SNOWFLAKE_WAREHOUSE = 'aw_etl'
 SNOWFLAKE_STAGE = 'beaconfire_stage'
  #S3_FILE_PATH = '</path/to/file/sample_file.csv'
 
-SNOWFLAKE_SAMPLE_TABLE = 'airflow_testing'
+SNOWFLAKE_SAMPLE_TABLE = 'airflow_testing_group1'
 
 # SQL commands
 CREATE_TABLE_SQL_STRING = (
