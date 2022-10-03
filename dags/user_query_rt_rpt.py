@@ -15,6 +15,7 @@ SNOWFLAKE_SCHEMA = 'prod_db'
 
 SNOWFLAKE_ROLE = 'AW_developer'
 SNOWFLAKE_WAREHOUSE = 'aw_etl'
+#test airflow connection
 
 with DAG(
     "user_query_rt_rpt",
