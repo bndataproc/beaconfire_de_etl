@@ -30,7 +30,7 @@ SNOWFLAKE_STAGE = 'beaconfire_stage'
 # SQL_LIST = [SQL_INSERT_STATEMENT % {"id": n} for n in range(0, 10)]
 # SQL_MULTIPLE_STMTS = "; ".join(SQL_LIST)
 ENV_ID = os.environ.get("SYSTEM_TESTS_ENV_ID")
-DAG_ID = "beaconfire_dev_db_test"
+DAG_ID = "group1_stock_copy"
 # # [START howto_operator_snowflake]
 
 with DAG(
