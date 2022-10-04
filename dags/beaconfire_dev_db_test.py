@@ -61,10 +61,10 @@ with DAG(
 
     snowflake_op_sql_list = SnowflakeOperator(task_id='snowflake_op_sql_list', sql=SQL_LIST)
 
-    # snowflake_op_sql_multiple_stmts = SnowflakeOperator(
-    #     task_id='snowflake_op_sql_multiple_stmts',
-    #     sql=SQL_MULTIPLE_STMTS,
-    # )
+    snowflake_op_sql_multiple_stmts = SnowflakeOperator(
+        task_id='snowflake_op_sql_multiple_stmts',
+        sql=SQL_MULTIPLE_STMTS,
+    )
 
     snowflake_op_template_file = SnowflakeOperator(
        task_id='snowflake_op_template_file',
@@ -89,13 +89,13 @@ with DAG(
 
     (
         snowflake_op_sql_str
-        # >> [
-        #     snowflake_op_with_params,
-        #     snowflake_op_sql_list,
-        #     snowflake_op_template_file,
-        #     # copy_into_table,
-        #     # snowflake_op_sql_multiple_stmts,
-        # ]
+        >> [
+            snowflake_op_with_params,
+            snowflake_op_sql_list,
+            snowflake_op_template_file,
+            # copy_into_table,
+            snowflake_op_sql_multiple_stmts,
+        ]
         
     )
     # [END snowflake_example_dag]
