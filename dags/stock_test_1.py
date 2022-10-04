@@ -26,7 +26,7 @@ INSERT_LAST_DATA = (
     "low_price,close_price,volume,adj_close_price)" +
     "SELECT symbol,date,open,high,low,close,volume,adjclose" +
     "FROM US_STOCKS_DAILY.PUBLIC.STOCK_HISTORY" +
-    "WHERE date = current_date()"
+    "WHERE date = current_date();"
 )
 
 with DAG(
