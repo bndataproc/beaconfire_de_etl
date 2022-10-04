@@ -21,13 +21,13 @@ CREATE_TABLE = (
     "close_price number, volume number, adj_close_price number);"
 )
 
-INSERT_LAST_DATA = (
-    f"INSERT INTO {SNOWFLAKE_TABLE} (symbol,price_date,open_price,high_price," +
-    "low_price,close_price,volume,adj_close_price)" +
-    "SELECT symbol,date,open,high,low,close,volume,adjclose" +
-    "FROM US_STOCKS_DAILY.PUBLIC.STOCK_HISTORY" +
-    "WHERE date = current_date();"
-)
+# INSERT_LAST_DATA = (
+#     f"INSERT INTO {SNOWFLAKE_TABLE} (symbol,price_date,open_price,high_price," +
+#     "low_price,close_price,volume,adj_close_price)" +
+#     "SELECT symbol,date,open,high,low,close,volume,adjclose" +
+#     "FROM US_STOCKS_DAILY.PUBLIC.STOCK_HISTORY" +
+#     "WHERE date = current_date();"
+# )
 
 with DAG(
     'stock_test_1',
@@ -47,13 +47,18 @@ with DAG(
         role=SNOWFLAKE_ROLE,
     )
 
+    # snowflake_insert_data = SnowflakeOperator(
+    #     task_id='snowflake_insert_data',
+    #     sql=INSERT_LAST_DATA,
+    #     warehouse=SNOWFLAKE_WAREHOUSE,
+    #     database=SNOWFLAKE_DATABASE,
+    #     schema=SNOWFLAKE_SCHEMA,
+    #     role=SNOWFLAKE_ROLE,
+    # )
+
     snowflake_insert_data = SnowflakeOperator(
         task_id='snowflake_insert_data',
-        sql=INSERT_LAST_DATA,
-        warehouse=SNOWFLAKE_WAREHOUSE,
-        database=SNOWFLAKE_DATABASE,
-        schema=SNOWFLAKE_SCHEMA,
-        role=SNOWFLAKE_ROLE,
+        sql='./stock_test_1.sql',
     )
 
     snowflake_create_table >> snowflake_insert_data
