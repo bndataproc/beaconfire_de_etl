@@ -49,7 +49,7 @@ DAG_ID = "beaconfire_dev_db_test"
 with DAG(
     DAG_ID,
     start_date=datetime(2021, 1, 1),
-    schedule_interval='07 * * * *',
+    schedule_interval='0 12 * * *',
     default_args={'snowflake_conn_id': SNOWFLAKE_CONN_ID},
     tags=['beaconfire'],
     catchup=False,
