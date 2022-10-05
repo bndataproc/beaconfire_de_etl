@@ -12,25 +12,25 @@ from airflow.providers.snowflake.operators.snowflake import SnowflakeOperator
 # hello again
 
 SNOWFLAKE_CONN_ID = 'snowflake_conn'
-SNOWFLAKE_DATABASE = 'stock_group1_dev'
-SNOWFLAKE_SCHEMA = 'schema_group1'
+SNOWFLAKE_DATABASE = 'beaconfire'
+SNOWFLAKE_SCHEMA = 'dev_db'
 
 SNOWFLAKE_ROLE = 'AW_developer'
 SNOWFLAKE_WAREHOUSE = 'aw_etl'
 SNOWFLAKE_STAGE = 'beaconfire_stage'
  #S3_FILE_PATH = '</path/to/file/sample_file.csv'
 
-#SNOWFLAKE_SAMPLE_TABLE = 'airflow_testing_group1'
+# SNOWFLAKE_SAMPLE_TABLE = 'BEACONFIRE.DEV_DB.group1_COMPANY_PROFILE_prestage'
 
-# # SQL commands
+# SQL commands
 # CREATE_TABLE_SQL_STRING = (
-#     f"CREATE OR REPLACE TRANSIENT TABLE {SNOWFLAKE_SAMPLE_TABLE} (name VARCHAR(250), id INT);"
+#     f"CREATE OR REPLACE TRANSIENT TABLE {SNOWFLAKE_SAMPLE_TABLE} as SELECT * FROM US_STOCKS_DAILY.PUBLIC.COMPANY_PROFILE;"
 # )
 # SQL_INSERT_STATEMENT = f"INSERT INTO {SNOWFLAKE_SAMPLE_TABLE} VALUES ('name', %(id)s)"
 # SQL_LIST = [SQL_INSERT_STATEMENT % {"id": n} for n in range(0, 10)]
 # SQL_MULTIPLE_STMTS = "; ".join(SQL_LIST)
 ENV_ID = os.environ.get("SYSTEM_TESTS_ENV_ID")
-DAG_ID = "group1_stock_copy"
+DAG_ID = "group1_stock_load"
 # # [START howto_operator_snowflake]
 
 with DAG(
@@ -68,9 +68,14 @@ with DAG(
     #     sql=SQL_MULTIPLE_STMTS,
     # )
 
-    snowflake_op_template_file = SnowflakeOperator(
-       task_id='group1_stock_copy',
-       sql='./Group1_stock_test.sql',
+    snowflake_op_prestage = SnowflakeOperator(
+       task_id='group1_stock_prestage',
+       sql='./group1_stock_create_table.sql',
+    )
+
+    snowflake_op_incre = SnowflakeOperator(
+        task_id='group1_stock_incre',
+        sql='./group1_stock_incre.sql',
     )
 
     # [END howto_operator_snowflake]
@@ -90,7 +95,7 @@ with DAG(
 
 
     (
-        snowflake_op_template_file
+        snowflake_op_prestage >> snowflake_op_incre
         # >> [
         #     snowflake_op_with_params,
         #     snowflake_op_sql_list,
