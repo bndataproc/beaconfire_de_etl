@@ -25,7 +25,7 @@ SNOWFLAKE_STAGE = 'beaconfire_stage'
 SNOWFLAKE_SAMPLE_TABLE = 'airflow_ds_figureout'
 
 with DAG(
-    "user_query_rt_rpt",
+    "ds_test",
     start_date=datetime(2021, 1, 1),
     schedule_interval='0 7 * * *',
     default_args={'snowflake_conn_id': SNOWFLAKE_CONN_ID},
