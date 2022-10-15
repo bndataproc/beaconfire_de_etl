@@ -24,6 +24,8 @@ SNOWFLAKE_STAGE = 'beaconfire_stage'
 
 SNOWFLAKE_SAMPLE_TABLE = 'airflow_ds_figureout'
 
+EXEC_DATE = '{{ ds }}'
+
 with DAG(
     "ds_test",
     start_date=datetime(2021, 1, 1),
@@ -35,7 +37,7 @@ with DAG(
 
     user_query_rt_rpt = SnowflakeOperator(
        task_id='user_query_rt_rpt',
-       sql=f"insert into {SNOWFLAKE_SAMPLE_TABLE} values (1,'abc','{{ ds }}')",
+       sql=f"insert into {SNOWFLAKE_SAMPLE_TABLE} values (1,'abc',{EXEC_DATE})",
     )
 
     user_query_rt_rpt
