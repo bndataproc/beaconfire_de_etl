@@ -24,7 +24,7 @@ SNOWFLAKE_STAGE = 'beaconfire_stage'
 
 SNOWFLAKE_SAMPLE_TABLE = 'airflow_ds_figureout'
 
-EXEC_DATE = '{{ ds }}'
+EXEC_DATE = str('{{ ds }}')
 
 with DAG(
     "ds_test",
@@ -40,4 +40,6 @@ with DAG(
        sql=f"insert into {SNOWFLAKE_SAMPLE_TABLE} values (1,'abc',{EXEC_DATE})",
     )
 
-    user_query_rt_rpt
+    (
+        user_query_rt_rpt
+    )
