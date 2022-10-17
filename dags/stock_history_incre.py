@@ -18,25 +18,13 @@ SNOWFLAKE_SCHEMA = 'dev_db'
 SNOWFLAKE_ROLE = 'AW_developer'
 SNOWFLAKE_WAREHOUSE = 'aw_etl'
 SNOWFLAKE_STAGE = 'beaconfire_stage'
- #S3_FILE_PATH = '</path/to/file/sample_file.csv'
 
-# SNOWFLAKE_SAMPLE_TABLE = 'BEACONFIRE.DEV_DB.group1_COMPANY_PROFILE_prestage'
-
-# SQL commands
-# CREATE_TABLE_SQL_STRING = (
-#     f"CREATE OR REPLACE TRANSIENT TABLE {SNOWFLAKE_SAMPLE_TABLE} as SELECT * FROM US_STOCKS_DAILY.PUBLIC.COMPANY_PROFILE;"
-# )
-# SQL_INSERT_STATEMENT = f"INSERT INTO {SNOWFLAKE_SAMPLE_TABLE} VALUES ('name', %(id)s)"
-# SQL_LIST = [SQL_INSERT_STATEMENT % {"id": n} for n in range(0, 10)]
-# SQL_MULTIPLE_STMTS = "; ".join(SQL_LIST)
-ENV_ID = os.environ.get("SYSTEM_TESTS_ENV_ID")
-DAG_ID = "group1_stock_load"
-# # [START howto_operator_snowflake]
+DAG_ID = "stock_history_increload"
 
 with DAG(
     DAG_ID,
     start_date=datetime(2021, 1, 1),
-    schedule_interval='30 * * * *',
+    schedule_interval='0 8 * * 2,4,6',
     default_args={'snowflake_conn_id': SNOWFLAKE_CONN_ID},
     tags=['test'],
     catchup=False,
@@ -67,15 +55,26 @@ with DAG(
     #     task_id='snowflake_op_sql_multiple_stmts',
     #     sql=SQL_MULTIPLE_STMTS,
     # )
-
-    snowflake_op_prestage = SnowflakeOperator(
-       task_id='group1_stock_prestage',
-       sql='./group1_stock_create_table.sql',
+    snowflake_stock_history_historical = SnowflakeOperator(
+        task_id="stock_history_historical",
+        sql="./stock_history_historical.sql",
     )
 
-    snowflake_op_incre = SnowflakeOperator(
-        task_id='group1_stock_incre',
-        sql='./group1_stock_incre.sql',
+    snowflake_stock_history_fact = SnowflakeOperator(
+        task_id="stock_history_incre",
+        sql="insert into fact_stock_history "
+            "select symbol_id, symbol, date, open, high, low, close, volume, ADJCLOSE "
+            "from stock_history_historical where load_id=current_date() and date>='{{ ds }}'",
+    )
+
+    snowflake_company_profile_temp = SnowflakeOperator(
+        task_id='company_profile_deduplicated',
+        sql='./company_profile_temp_table.sql',
+    )
+
+    snowflake_company_profile_dim = SnowflakeOperator(
+        task_id='company_profile_incre',
+        sql='./company_profile_incre.sql',
     )
 
     # [END howto_operator_snowflake]
@@ -95,7 +94,12 @@ with DAG(
 
 
     (
-        snowflake_op_prestage >> snowflake_op_incre
+        [
+            snowflake_stock_history_historical >> snowflake_stock_history_fact,
+            snowflake_company_profile_temp >> snowflake_company_profile_dim
+
+        ]
+
         # >> [
         #     snowflake_op_with_params,
         #     snowflake_op_sql_list,
@@ -106,3 +110,4 @@ with DAG(
 
     )
     # [END snowflake_example_dag]
+
