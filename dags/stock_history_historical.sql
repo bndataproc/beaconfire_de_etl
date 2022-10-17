@@ -1,5 +1,4 @@
 INSERT INTO stock_history_historical
-AS
     SELECT
         *
         ,current_date() as load_id
