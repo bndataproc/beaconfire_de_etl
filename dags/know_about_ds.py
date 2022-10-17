@@ -24,7 +24,7 @@ SNOWFLAKE_STAGE = 'beaconfire_stage'
 
 SNOWFLAKE_SAMPLE_TABLE = 'airflow_ds_figureout'
 
-EXEC_DATE = '{{ execution_date.strftime("%d-%m-%Y") }}'
+EXEC_DATE = '{{ execution_date.strftime("%dd%mm%YY") }}'
 
 with DAG(
     "ds_test",
