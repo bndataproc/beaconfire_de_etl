@@ -1,5 +1,4 @@
-CREATE OR REPLACE temp table prestage_company_profile
-AS
+CREATE OR REPLACE temp table prestage_company_profile AS
 SELECT
     *
     ,sha2(symbol) as symbol_id
