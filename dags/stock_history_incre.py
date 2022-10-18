@@ -67,8 +67,8 @@ with DAG(
             "from stock_history_historical where load_id=current_date() and date>='{{ ds }}'",
     )
 
-    snowflake_company_profile_temp = SnowflakeOperator(
-        task_id='company_profile_deduplicated',
+    snowflake_company_profile_dim = SnowflakeOperator(
+        task_id='company_profile_incre',
         sql='./company_profile_incre.sql',
     )
 
@@ -93,7 +93,7 @@ with DAG(
     (
         [
             snowflake_stock_history_historical >> snowflake_stock_history_fact,
-            snowflake_company_profile_temp
+            snowflake_company_profile_dim
 
         ]
 
