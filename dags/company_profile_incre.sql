@@ -40,7 +40,8 @@ INSERT (
     ,dcfdiff
     ,dcf)
 VALUES (
-    S.symbol
+    S.symbol_id
+    ,S.symbol
     ,S.price
     ,S.beta
     ,S.volavg
@@ -55,7 +56,8 @@ VALUES (
     ,S.dcfdiff
     ,S.dcf)
 WHEN MATCHED THEN
-UPDATE SET T.symbol=S.symbol
+UPDATE SET T.symbol_id=S.symbol_id
+           ,T.symbol=S.symbol
            ,T.price=S.price
            ,T.beta=S.beta
            ,T.volavg=S.volavg
