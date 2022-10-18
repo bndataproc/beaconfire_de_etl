@@ -19,7 +19,7 @@ WHERE rk = 1;
 
 
 
-ERGE INTO DIM_COMPANY_PROFILE AS T
+MERGE INTO DIM_COMPANY_PROFILE AS T
 USING prestage_company_profile AS S
 ON T.symbol_id=S.symbol_id
 WHEN NOT MATCHED THEN
