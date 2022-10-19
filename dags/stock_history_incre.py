@@ -24,7 +24,7 @@ DAG_ID = "stock_history_increload"
 with DAG(
     DAG_ID,
     start_date=datetime(2021, 1, 1),
-    schedule_interval='0 8 * * 2,4,6',
+    schedule_interval='0 8 * * 1-5',
     default_args={'snowflake_conn_id': SNOWFLAKE_CONN_ID},
     tags=['test'],
     catchup=False,
