@@ -14,7 +14,7 @@ SNOWFLAKE_SCHEMA = 'dev_db'
 
 SNOWFLAKE_ROLE = 'AW_developer'
 SNOWFLAKE_WAREHOUSE = 'aw_etl'
-SNOWFLAKE_STAGE = 's3_stage_trans_customer_payment'
+SNOWFLAKE_STAGE = 's3_stage_customer_payment'
 # S3_FILE_PATH = 'customer_payment_10182022.csv'
 
 with DAG(
