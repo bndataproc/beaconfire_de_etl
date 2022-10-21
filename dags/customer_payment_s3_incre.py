@@ -22,7 +22,7 @@ SNOWFLAKE_PRESTAGE_TABLE = 'customer_payment_prestg'
 SNOWFLAKE_STAGE_TABLE = 'customer_payment_stg'
 
 CREATE_TABLE_SQL_STRING = (
-    f'''CREATE OR REPLACE TEMP TABLE {SNOWFLAKE_PRESTAGE_TABLE} (
+    f'''CREATE OR REPLACE TRANSIENT TABLE {SNOWFLAKE_PRESTAGE_TABLE} (
         InvoiceNo varchar
         ,StockCode varchar
         ,Description varchar
