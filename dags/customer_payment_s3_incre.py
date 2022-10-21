@@ -17,9 +17,12 @@ SNOWFLAKE_WAREHOUSE = 'aw_etl'
 SNOWFLAKE_STAGE = 's3_stage_customer_payment'
 # S3_FILE_PATH = 'customer_payment_10182022.csv'
 
-SNOWFLAKE_SAMPLE_TABLE = 'customer_payment_prestg'
+EXEC_DATE = '{{ ds.strftime("%d%m%Y") }}'
+SNOWFLAKE_PRESTAGE_TABLE = 'customer_payment_prestg'
+SNOWFLAKE_STAGE_TABLE = 'customer_payment_stg'
+
 CREATE_TABLE_SQL_STRING = (
-    f'''CREATE OR REPLACE TEMP TABLE {SNOWFLAKE_SAMPLE_TABLE} (
+    f'''CREATE OR REPLACE TEMP TABLE {SNOWFLAKE_PRESTAGE_TABLE} (
         InvoiceNo varchar
         ,StockCode varchar
         ,Description varchar
@@ -30,6 +33,17 @@ CREATE_TABLE_SQL_STRING = (
         ,Country varchar);
     '''
 )
+
+GET_LOAD_DATE = (
+    f'''CREATE OR REPLACE TABLE {SNOWFLAKE_STAGE_TABLE} AS
+        SELECT 
+        *
+        , {EXEC_DATE} as load_date
+        FROM {SNOWFLAKE_PRESTAGE_TABLE};
+    '''
+)
+
+
 with DAG(
         "group1_s3_copy_test",
         start_date=datetime(2022, 10, 18),
@@ -59,7 +73,16 @@ with DAG(
             ESCAPE_UNENCLOSED_FIELD = NONE RECORD_DELIMITER = '\n')''',
     )
 
-    create_prestg_table >> copy_into_prestg
+    create_stg_table = SnowflakeOperator(
+        task_id='snowflake_create_stg_with_load_date',
+        sql=GET_LOAD_DATE,
+        warehouse=SNOWFLAKE_WAREHOUSE,
+        database=SNOWFLAKE_DATABASE,
+        schema=SNOWFLAKE_SCHEMA,
+        role=SNOWFLAKE_ROLE,
+    )
+
+    create_prestg_table >> copy_into_prestg >> create_stg_table
 
 
 
