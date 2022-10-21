@@ -17,7 +17,7 @@ SNOWFLAKE_WAREHOUSE = 'aw_etl'
 SNOWFLAKE_STAGE = 's3_stage_customer_payment'
 # S3_FILE_PATH = 'customer_payment_10182022.csv'
 
-EXEC_DATE = '{{ ds.strftime("%d%m%Y") }}'
+EXEC_DATE = '{{ ds_nodash }}'
 SNOWFLAKE_PRESTAGE_TABLE = 'customer_payment_prestg'
 SNOWFLAKE_STAGE_TABLE = 'customer_payment_stg'
 
