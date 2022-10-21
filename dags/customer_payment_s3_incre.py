@@ -51,7 +51,7 @@ with DAG(
         schedule_interval='0 7 * * *',
         default_args={'snowflake_conn_id': SNOWFLAKE_CONN_ID},
         tags=['test'],
-        catchup=True,
+        catchup=False,
 ) as dag:
     create_prestg_table = SnowflakeOperator(
         task_id='snowflake_create_prestg_table',
