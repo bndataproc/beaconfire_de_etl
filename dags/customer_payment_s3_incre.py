@@ -18,7 +18,7 @@ SNOWFLAKE_STAGE = 's3_stage_customer_payment'
 # S3_FILE_PATH = 'customer_payment_10182022.csv'
 
 with DAG(
-        "group1_s3_copy_test",
+        "group1_s3_copy_tesing",
         start_date=datetime(2022, 10, 19),
         end_date=datetime(2022, 10, 23),
         schedule_interval='0 7 * * *',
