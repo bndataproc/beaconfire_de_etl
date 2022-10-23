@@ -19,7 +19,7 @@ SNOWFLAKE_STAGE = 's3_stage_customer_payment'
 
 with DAG(
         "group1_s3_copy_test",
-        start_date=datetime(2022, 10, 18),
+        start_date=datetime(2022, 10, 21),
         end_date=datetime(2022, 10, 23),
         schedule_interval='0 7 * * *',
         default_args={'snowflake_conn_id': SNOWFLAKE_CONN_ID},
