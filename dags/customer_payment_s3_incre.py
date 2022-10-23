@@ -19,12 +19,12 @@ SNOWFLAKE_STAGE = 's3_stage_customer_payment'
 
 with DAG(
         "group1_s3_copy_tesing",
-        start_date=datetime(2022, 10, 19),
+        start_date=datetime(2022, 10, 20),
         end_date=datetime(2022, 10, 23),
         schedule_interval='0 7 * * *',
         default_args={'snowflake_conn_id': SNOWFLAKE_CONN_ID},
         tags=['test'],
-        catchup=False,
+        catchup=True,
 ) as dag:
 
     copy_into_prestg = S3ToSnowflakeOperator(
