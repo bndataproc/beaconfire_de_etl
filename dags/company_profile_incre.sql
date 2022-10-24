@@ -1,22 +1,16 @@
+-- deduplicated
 CREATE OR REPLACE temp table prestage_company_profile AS
 SELECT
-    *
-    ,sha2(symbol) as symbol_id
+    MD5_NUMBER_LOWER64(symbol) as symbol_id
+    ,*
 FROM
 (
     SELECT
-      *
-      ,rank() over (partition by symbol order by rnm desc) as rk
-    FROM
-    (
-        SELECT
-           *
-          ,row_number() over (order by (select 0)) as rnm
-        FROM "US_STOCKS_DAILY"."PUBLIC"."COMPANY_PROFILE"
-        ) a
-) b
-WHERE rk = 1;
-
+        *
+        ,row_number() over (partition by symbol order by id desc) as rnm
+    FROM "US_STOCKS_DAILY"."PUBLIC"."COMPANY_PROFILE"
+) a
+WHERE rnm = 1;
 
 
 MERGE INTO DIM_COMPANY_PROFILE AS T
@@ -56,9 +50,7 @@ VALUES (
     ,S.dcfdiff
     ,S.dcf)
 WHEN MATCHED THEN
-UPDATE SET T.symbol_id=S.symbol_id
-           ,T.symbol=S.symbol
-           ,T.price=S.price
+UPDATE SET T.price=S.price
            ,T.beta=S.beta
            ,T.volavg=S.volavg
            ,T.mktcap=S.mktcap
