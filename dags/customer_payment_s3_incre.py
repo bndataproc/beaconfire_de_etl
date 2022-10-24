@@ -10,7 +10,7 @@ from airflow.providers.snowflake.transfers.s3_to_snowflake import S3ToSnowflakeO
 
 SNOWFLAKE_CONN_ID = 'snowflake_conn'
 SNOWFLAKE_DATABASE = 'beaconfire'
-SNOWFLAKE_SCHEMA = 'dev_db'
+SNOWFLAKE_SCHEMA = 'prod_db'
 
 SNOWFLAKE_ROLE = 'AW_developer'
 SNOWFLAKE_WAREHOUSE = 'aw_etl'
